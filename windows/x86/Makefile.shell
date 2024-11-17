@@ -1,0 +1,6 @@
+shellcode: shellcode.obj
+	objcopy -j .text -O binary shellcode.obj shellcode.bin
+
+shellcode.obj: shellcode.asm
+	nasm -f win32 -o shellcode.obj shellcode.asm
+	gcc -m32 shellcode.obj -o shellcode.exe -lkernel32 -luser32 -nostartfiles -e _start
