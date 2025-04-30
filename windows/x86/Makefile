@@ -5,7 +5,7 @@ run:
 	xxd -p ./out/shellcode.bin | tr -d '\n' | sed 's/../\ 0x&,/g'
 	./out/shellcode_runner.exe ./out/shellcode.bin
 
-# Decode and run encoded shellcode at runtime 
+# Run encoded shellcode by decoding at runtime 
 run-decode:
 	mkdir -p out
 	make shell
@@ -14,11 +14,11 @@ run-decode:
 	./out/shellcode_runner.exe ./out/shellcode_decoder.bin
 
 shell:
-	gcc -m32 shellcode_runner.c -o ./out/shellcode_runner.exe
+	gcc -m32 ./src/shellcode_runner.c -o ./out/shellcode_runner.exe
 	make -f Makefile.shell TARGET=shellcode
 
 decode:
-	g++ ./shellcode_encoder.cpp -o ./out/shellcode_encoder.exe
+	g++ ./src/shellcode_encoder.cpp -o ./out/shellcode_encoder.exe
 	make -f Makefile.shell TARGET=shellcode_decoder
 
 clean:

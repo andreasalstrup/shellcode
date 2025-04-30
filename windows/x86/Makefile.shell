@@ -2,18 +2,18 @@ TARGET ?= shellcode
 ENCODED_SHELLCODE := $(shell ./out/shellcode_encoder.exe ./out/shellcode.bin)
 SHELLCODE_LENGTH := $(shell echo "$(ENCODED_SHELLCODE)" | awk -F',' '{print NF}')
 
-$(TARGET): $(TARGET).obj
+./out/$(TARGET): ./out/$(TARGET).obj
 	objcopy -j .text -O binary ./out/$(TARGET).obj ./out/$(TARGET).bin
 
-$(TARGET).obj: $(TARGET).asm
+./out/$(TARGET).obj: ./src/$(TARGET).asm
 ifeq ($(TARGET), shellcode_decoder)
 	# Embed encoded shellcode
-	sed "s|@ENCODED_SHELLCODE@|$(ENCODED_SHELLCODE)|g" $(TARGET).asm > ./out/$(TARGET).temp.asm
+	sed "s|@ENCODED_SHELLCODE@|$(ENCODED_SHELLCODE)|g" ./src/$(TARGET).asm > ./out/$(TARGET).temp.asm
 	# Set length of encoded shellcode
 	sed -i "s|@SHELLCODE_LENGTH@|$(SHELLCODE_LENGTH)|g" ./out/$(TARGET).temp.asm
 	nasm -f win32 -o ./out/$(TARGET).obj ./out/$(TARGET).temp.asm
 	gcc -m32 ./out/$(TARGET).obj -o ./out/$(TARGET).exe -lkernel32 -luser32 -nostartfiles -e _start
 else
-	nasm -f win32 -o ./out/$(TARGET).obj $(TARGET).asm
+	nasm -f win32 -o ./out/$(TARGET).obj ./src/$(TARGET).asm
 	gcc -m32 ./out/$(TARGET).obj -o ./out/$(TARGET).exe -lkernel32 -luser32 -nostartfiles -e _start
 endif
