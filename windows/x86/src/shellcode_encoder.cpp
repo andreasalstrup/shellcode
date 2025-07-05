@@ -14,20 +14,20 @@ class ShellcodeEncoder {
 
   ShellcodeEncoder& encode() {
     for (auto& byte : hexVec) {
-      byte = byte ^ 0x16;
-      byte = byte ^ 0x42;
-      byte = byte + 0x39;
-      byte = byte ^ 0x56;
+      byte = byte ^ 0xF;
+      byte = byte ^ 0x7;
+      byte = byte + 0x13;
+      byte = byte ^ 0x39;
     }
     return *this;
   }
 
   ShellcodeEncoder& decode() {
     for (auto& byte : hexVec) {
-      byte = byte ^ 0x56;
-      byte = byte - 0x39;
-      byte = byte ^ 0x42;
-      byte = byte ^ 0x16;
+      byte = byte ^ 0x39;
+      byte = byte - 0x13;
+      byte = byte ^ 0x7;
+      byte = byte ^ 0xF;
     }
     return *this;
   }

