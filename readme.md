@@ -1,3 +1,3 @@
 # Shellcode
 
-### [Windows x86](windows\x86\readme.md)
+### [Windows x86](windows/x86/readme.md)
